@@ -1,0 +1,28 @@
+<form id="searchForm"
+  (ngSubmit)="searchUsers()">
+  <div class="input-group">
+    <input type="text"
+      [(ngModel)]="searchTerm"
+      name="searchTerm"
+      class="form-control"
+      placeholder="Search User">
+    <span class="input-group-btn">
+      <button class="btn btn-info"
+        modal-trigger="searchResults">
+        Search
+      </button>
+    </span>
+  </div>
+</form>
+
+<simple-modal elementId="searchResults"
+  closeOnBodyClick="true"
+  title="Matching Users">
+  <div class="list-group">
+    <a class="list-group-item"
+      *ngFor="let user of foundUsers"
+      [routerLink]="['/users', user.id]">
+      {{ user.name }}
+    </a>
+  </div>
+</simple-modal>

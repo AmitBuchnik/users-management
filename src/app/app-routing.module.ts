@@ -1,10 +1,33 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-const routes: Routes = [];
+import { AuthGuard } from './auth/auth-guard';
+
+import { HomeComponent } from './core/home/home.component';
+import { PostsComponent } from './posts/posts.component';
+import { TasksComponent } from './tasks/tasks.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: 'users',
+    loadChildren: './users/users.module#UsersModule',
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'posts',
+    component: PostsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'tasks',
+    component: TasksComponent,
+    canActivate: [AuthGuard]
+  }
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

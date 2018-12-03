@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+    <form (ngSubmit)="onSignup(form)"
+      #form="ngForm">
+      <div class="form-group">
+        <label for="email">Mail</label>
+        <input type="email"
+          name="email"
+          class="form-control"
+          email
+          required
+          ngModel
+          #email="ngModel"
+          required>
+        <ng-container *ngIf="email.invalid && email.touched">
+          <span class="help-block"
+            *ngIf="email.errors.email">Please enter valid email</span>
+          <span class="help-block"
+            *ngIf="email.errors.required">Mail is required</span>
+        </ng-container>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password"
+          name="password"
+          class="form-control"
+          required
+          minlength="6"
+          ngModel
+          #password="ngModel">
+        <ng-container *ngIf="password.invalid && password.touched">
+          <span class="help-block"
+            *ngIf="password.errors.minlength">Password must be at least 6 characters long</span>
+          <span class="help-block"
+            *ngIf="password.errors.required">Password is required</span>
+        </ng-container>
+      </div>
+      <ng-template [ngIf]="!(authState | async).authenticated && (authState | async).error != null">
+        <span class="help-block">{{ (authState | async).error }}</span>
+      </ng-template>
+      <button class="btn btn-primary"
+        type="submit"
+        (keyup.enter)="onSignup(form)"
+        [disabled]="form.invalid">
+        Sign Up
+      </button>
+    </form>
+  </div>
+</div>
