@@ -16,7 +16,7 @@ import {
 
 import { IPost } from 'src/app/posts/post.model';
 import { ITask } from 'src/app/tasks/task.model';
-import { IUser } from '../user.model';
+import { IUser, User } from '../user.model';
 
 import * as fromApp from '../../store/app.reducers';
 import * as fromUser from '../store/user.reducers';
@@ -76,7 +76,7 @@ import * as TasksActions from '../../tasks/store/tasks.actions';
   ]
 })
 export class UserDetailsComponent implements OnInit {
-  user: IUser;
+  user = new User();
   posts: IPost[];
   tasks: ITask[];
 
@@ -99,7 +99,7 @@ export class UserDetailsComponent implements OnInit {
         const posts$ = this.store.select('posts')
           .pipe(filter((postsState: fromPosts.IState) => postsState && postsState.loaded));
         const tasks$ = this.store.select('tasks')
-          .pipe(filter((tasksState: fromTasks.IState) => tasksState &&tasksState.loaded));
+          .pipe(filter((tasksState: fromTasks.IState) => tasksState && tasksState.loaded));
 
         const combined = combineLatest(users$, posts$, tasks$);
         combined.pipe(take(1))
