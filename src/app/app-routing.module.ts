@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { AuthGuard } from './auth/auth-guard';
+import { PostsResolver } from './posts/posts-resolver.service';
 
 import { HomeComponent } from './core/home/home.component';
 import { PostsComponent } from './posts/posts.component';
@@ -12,12 +13,14 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: './users/users.module#UsersModule',
-    canLoad: [AuthGuard]
+    // canLoad: [AuthGuard],
+    // canActivate: [AuthGuard]
   },
   {
     path: 'posts',
     component: PostsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { posts: PostsResolver }
   },
   {
     path: 'tasks',

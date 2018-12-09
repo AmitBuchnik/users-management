@@ -16,7 +16,7 @@ export function postsReducer(state = intialState, action: PostsActions.PostsActi
         case PostsActions.SET_POSTS:
             return {
                 ...state,
-                users: [...action.payload],
+                posts: [...action.payload],
                 loaded: true
             };
 

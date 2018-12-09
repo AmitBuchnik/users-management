@@ -60,6 +60,12 @@ export function userReducer(state = intialState, action: UserActions.UserActions
                 users: oldUsers
             };
 
+        // case UserActions.ERROR:
+        //     return {
+        //         ...state,
+        //         loaded: false
+        //     };
+
         default:
             return state;
     }

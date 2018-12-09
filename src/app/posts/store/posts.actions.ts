@@ -6,6 +6,7 @@ export const SET_POSTS = 'SET_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const STORE_POSTS = 'STORE_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
+export const FAILED_LOAD_POSTS = 'FAILED_LOAD_POSTS';
 
 export class StorePosts implements Action {
     readonly type = STORE_POSTS;
@@ -29,8 +30,16 @@ export class AddPost implements Action {
     }
 }
 
+export class FailedLoadPosts implements Action {
+    readonly type = FAILED_LOAD_POSTS;
+
+    constructor(public payload: string) {
+    }
+}
+
 export type PostsActions =
     SetPosts |
     AddPost |
     StorePosts |
-    FetchPosts;
+    FetchPosts |
+    FailedLoadPosts;

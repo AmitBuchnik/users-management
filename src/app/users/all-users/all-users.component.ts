@@ -14,11 +14,11 @@ import {
   group
 } from '@angular/animations';
 
+import { IUser } from '../user.model';
+
 import * as fromApp from '../../store/app.reducers';
 import * as fromUsers from '../store/user.reducers';
 import * as UserActions from '../store/user.actions';
-
-import { IUser } from '../user.model';
 
 @Component({
   selector: 'app-all-users',
@@ -69,17 +69,11 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.usersSubscription = this.store.select('users')
-    //   .subscribe((usersState: fromUsers.IState) => this.users = usersState.users);
+    // this.userListState$ = this.store.select(fromApp.getUsersState);
 
-    this.userListState$ = this.store.select(fromApp.getUsersState);
-
-    // this.route.data.subscribe((data) => {
-    //   // data['users']
-    //   //   .subscribe((users: IUser[]) => this.users = users);
-
-    //   this.userListState$ = data['users'];
-    // });
+    this.route.data.subscribe((data) => {
+      this.users = data['users']
+    });
   }
 
   ngOnDestroy() {

@@ -8,7 +8,7 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const STORE_USERS = 'STORE_USERS';
 export const FETCH_USERS = 'FETCH_USERS';
-export const ERROR = 'ERROR';
+export const FAILED_LOAD_USERS = 'FAILED_LOAD_USERS';
 
 export class StoreUsers implements Action {
     readonly type = STORE_USERS;
@@ -46,8 +46,8 @@ export class DeleteUser implements Action {
     }
 }
 
-export class Error implements Action {
-    readonly type = ERROR;
+export class FailedLoadUsers implements Action {
+    readonly type = FAILED_LOAD_USERS;
 
     constructor(public payload: string) {
     }
@@ -60,4 +60,4 @@ export type UserActions =
     DeleteUser |
     StoreUsers |
     FetchUsers |
-    Error;
+    FailedLoadUsers;

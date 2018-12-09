@@ -1,19 +1,26 @@
 <input class="form-control"
   id="myInput"
   type="number"
-  placeholder="Filter by UserId">
+  [(ngModel)]="filter"
+  placeholder="Filter by UserId"
+  (input)="onInput()">
 <br>
-<table class="table">
+<table class="table"
+  [@table]>
   <thead>
     <tr>
-      <th>Post ID</th>
-      <th>Post Title</th>
-      <th>Post Body</th>
+      <th class="col-md-1">Post Id</th>
+      <th class="col-md-1">User Id</th>
+      <th class="col-md-1">User Name</th>
+      <th class="col-md-4">Title</th>
+      <th class="col-md-5">Body</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let post of (posts$ | async)?.posts">
+    <tr *ngFor="let post of filteredPosts">
       <td>{{ post.id }}</td>
+      <td>{{ post.userId }}</td>
+      <td>{{ post.UserName }}</td>
       <td>{{ post.title }}</td>
       <td>{{ post.body }}</td>
     </tr>

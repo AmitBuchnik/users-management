@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store } from '@ngrx/store';
@@ -14,6 +15,8 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 import { reducers } from './store/app.reducers';
 import { AuthEffects } from './auth/store/auth.effects';
+import { PostsEffects } from './posts/store/posts.effects';
+import { TasksEffects } from './tasks/store/tasks.effects';
 import { PostsComponent } from './posts/posts.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ApplicationService } from './services/application.service';
@@ -35,10 +38,11 @@ export function app_init(appService: ApplicationService) {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, PostsEffects, TasksEffects]),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule,

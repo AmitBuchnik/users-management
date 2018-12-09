@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { take, filter, map } from 'rxjs/operators';
 
 import { IUser } from '../user.model';
 
+import * as fromApp from '../../store/app.reducers';
 import * as fromUsers from '../store/user.reducers';
-import { take, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-user',
@@ -21,7 +22,7 @@ export class SearchUserComponent implements OnInit {
   }
 
   searchUsers(): void {
-    this.store.select('users')
+    this.store.select(fromApp.getUsersState)
       .pipe(take(1),
         map((usersState: fromUsers.IState) => {
           return usersState.users.filter(u => u.name.toLocaleLowerCase().includes(this.searchTerm.toLocaleLowerCase()));

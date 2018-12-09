@@ -1,4 +1,4 @@
-import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromAuth from '../auth/store/auth.reducers';
 import * as fromPosts from '../posts/store/posts.reducers';
@@ -18,4 +18,10 @@ export const reducers: ActionReducerMap<IAppState> = {
 };
 
 export const getUsersState = createFeatureSelector<fromUsers.IState>('users');
+
+export const getUsers = (state: fromUsers.IState) => state.users;
+
+export const getUserNameById = (id) => createSelector(
+    getUsers, users => users.find(u => u.id === id)
+);
 

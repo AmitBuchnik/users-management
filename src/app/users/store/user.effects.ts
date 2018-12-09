@@ -5,9 +5,11 @@ import { Store } from "@ngrx/store";
 import { map, take, switchMap, withLatestFrom, filter, catchError } from "rxjs/operators";
 import { of, empty, throwError } from "rxjs";
 
-import * as UserActions from './user.actions';
-import * as fromUser from './user.reducers';
 import { IUser } from "../user.model";
+
+import * as fromApp from '../../store/app.reducers';
+import * as fromUser from './user.reducers';
+import * as UserActions from './user.actions';
 
 @Injectable()
 export class UserEffects {
@@ -19,28 +21,33 @@ export class UserEffects {
     // @Effect()
     // usersFetch = this.actions$
     //     .ofType(UserActions.FETCH_USERS)
-    //     .pipe(switchMap((action: UserActions.FetchUsers) => {
-    //         return this.http.get<IUser[]>('https://users-management-2e2ec.firebaseio.com//users.json')
-    //             .pipe(filter(users => users != null),
-    //                 map((users) => {
-    //                     return {
-    //                         type: UserActions.SET_USERS,
-    //                         payload: users
-    //                     };
-    //                 }),
-    //                 catchError((error: Error) => {
-    //                     console.log(error);
-    //                     return of({
-    //                         type: UserActions.ERROR,
-    //                         payload: error.message
-    //                     });
-    //                 }));
-    //     }));
+    //     .pipe(withLatestFrom(this.store.select(fromApp.getUsersState))
+    //         , switchMap(([action, state]) => {
+    //             if (state.loaded) {
+    //                 return empty();
+    //             }
+
+    //             return this.http.get<IUser[]>('https://users-management-2e2ec.firebaseio.com//users.json')
+    //                 .pipe(filter(users => users != null),
+    //                     map((users) => {
+    //                         return {
+    //                             type: UserActions.SET_USERS,
+    //                             payload: users
+    //                         };
+    //                     }),
+    //                     catchError((error: Error) => {
+    //                         console.log(error);
+    //                         return of({
+    //                             type: UserActions.FAILED_LOAD_USERS,
+    //                             payload: error.message
+    //                         });
+    //                     }));
+    //         }));
 
     @Effect()
     usersFetch = this.actions$
         .ofType(UserActions.FETCH_USERS)
-        .pipe(withLatestFrom(this.store.select('users'))
+        .pipe(withLatestFrom(this.store.select(fromApp.getUsersState))
             , switchMap(([action, state]) => {
                 if (state.loaded) {
                     return empty();
@@ -50,35 +57,29 @@ export class UserEffects {
                     .pipe(switchMap(users => {
                         if (!users || users.length === 0) {
                             return this.http.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
-                            // .pipe(catchError((error: Error) => {
-                            //     console.log(error);
-                            //     return of({
-                            //         type: UserActions.ERROR,
-                            //         payload: error.message
-                            //     });
-                            // }))
                         }
+                        return of(users);
                     }),
+                        filter(users => users != null),
+                        map((users) => {
+                            return {
+                                type: UserActions.SET_USERS,
+                                payload: users
+                            };
+                        }),
                         catchError((error: Error) => {
                             console.log(error);
                             return of({
-                                type: UserActions.ERROR,
+                                type: UserActions.FAILED_LOAD_USERS,
                                 payload: error.message
                             });
-                    }),
-                    filter(users => users != null),
-                    map((users) => {
-                        return {
-                            type: UserActions.SET_USERS,
-                            payload: users
-                        };
-                    }));
+                        }));
             }));
 
     @Effect({ dispatch: false })
     usersStore = this.actions$
         .ofType(UserActions.STORE_USERS)
-        .pipe(withLatestFrom(this.store.select('users')),
+        .pipe(withLatestFrom(this.store.select(fromApp.getUsersState)),
             switchMap(([action, state]) => {
                 const request = new HttpRequest('PUT', 'https://users-management-2e2ec.firebaseio.com//users.json', state.users);
                 return this.http.request(request)

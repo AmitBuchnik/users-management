@@ -90,10 +90,20 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label>Posts</label>
-            <ul class="list-group">
+            <div class="list-group">
+              <a *ngFor="let post of posts"
+                class="list-group-item"
+                [@list]>
+                <span class=""> {{ post.title }} <button type="button"
+                    class="close">
+                    <span style="cursor: pointer">&times;</span>
+                  </button></span>
+              </a>
+            </div>
+            <!-- <ul class="list-group">
               <li *ngFor="let post of posts"
-                class="list-group-item">{{ post.title }}</li>
-            </ul>
+                class="list-group-item" [@list]>{{ post.title }}</li>
+            </ul> -->
           </div>
         </div>
       </div>
@@ -103,7 +113,8 @@
             <label>Tasks</label>
             <ul class="list-group">
               <li *ngFor="let task of tasks"
-                class="list-group-item">{{ task.title }}</li>
+                class="list-group-item"
+                [@list]>{{ task.title }}</li>
             </ul>
           </div>
         </div>

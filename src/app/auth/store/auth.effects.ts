@@ -44,7 +44,7 @@ export class AuthEffects {
                         catchError((error: Error) => {
                             console.log(error);
                             return of({
-                                type: AuthActions.ERROR,
+                                type: AuthActions.AUTH_ERROR,
                                 payload: error
                             });
                         }));
@@ -81,7 +81,7 @@ export class AuthEffects {
                         catchError((error: Error) => {
                             console.log(error);
                             return of({
-                                type: AuthActions.ERROR,
+                                type: AuthActions.AUTH_ERROR,
                                 payload: error
                             });
                         }));

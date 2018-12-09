@@ -29,7 +29,8 @@ export interface ICompany {
 }
 
 export class User implements IUser {
-    id: number; name: string;
+    id: number;
+    name: string;
     username?: string;
     email: string;
     address: IAddress;

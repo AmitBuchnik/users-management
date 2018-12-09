@@ -3,11 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import * as fromUser from '../store/user.reducers';
-import * as UserActions from '../store/user.actions';
 import { User } from '../user.model';
 import { take, map } from 'rxjs/operators';
-import { identifierModuleUrl } from '@angular/compiler';
+
+import * as fromApp from '../../store/app.reducers';
+import * as fromUser from '../store/user.reducers';
+import * as UserActions from '../store/user.actions';
 
 @Component({
   selector: 'app-add-user',
@@ -31,7 +32,7 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store.select('users')
+    this.store.select(fromApp.getUsersState)
       .pipe(take(1),
         map((usersState: fromUser.IState) => usersState.users[usersState.users.length - 1].id))
       .subscribe(id => {

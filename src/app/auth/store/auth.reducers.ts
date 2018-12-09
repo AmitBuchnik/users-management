@@ -36,7 +36,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 token: action.payload
             };
 
-        case AuthActions.ERROR:
+        case AuthActions.AUTH_ERROR:
             return {
                 ...state,
                 token: null,

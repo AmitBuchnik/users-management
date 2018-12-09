@@ -17,7 +17,7 @@
     <ul class="list-group">
       <a class="list-group-item"
         style="cursor: pointer"
-        *ngFor="let user of (userListState$ | async).users"
+        *ngFor="let user of users"
         [routerLink]="user.id"
         routerLinkActive="active"
         [@list]>
@@ -25,4 +25,7 @@
       </a>
     </ul>
   </div>
+  <!-- <ng-template [ngIf]="!(userListState$ | async).error != null">
+    <span class="help-block">{{ (userListState$ | async).error }}</span>
+  </ng-template> -->
 </div>
