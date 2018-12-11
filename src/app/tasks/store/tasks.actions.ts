@@ -4,6 +4,7 @@ import { ITask } from '../task.model';
 
 export const SET_TASKS = 'SET_TASKS';
 export const ADD_TASK = 'ADD_TASK';
+export const DELETE_TASK = 'DELETE_TASK';
 export const STORE_TASKS = 'STORE_TASKS';
 export const FETCH_TASKS = 'FETCH_TASKS';
 export const FAILED_LOAD_TASKS = 'FAILED_LOAD_TASKS';
@@ -30,6 +31,13 @@ export class AddTask implements Action {
     }
 }
 
+export class DeleteTask implements Action {
+    readonly type = DELETE_TASK;
+
+    constructor(public payload: number) {
+    }
+}
+
 export class FailedLoadTasks implements Action {
     readonly type = FAILED_LOAD_TASKS;
 
@@ -40,6 +48,7 @@ export class FailedLoadTasks implements Action {
 export type TasksActions =
     SetTasks |
     AddTask |
+    DeleteTask |
     StoreTasks |
     FetchTasks |
     FailedLoadTasks;

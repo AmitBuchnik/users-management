@@ -9,6 +9,8 @@ import { IUser } from './user.model';
 import * as fromApp from '../store/app.reducers';
 import * as fromUsers from './store/user.reducers';
 import * as UserActions from './store/user.actions';
+import * as PostsActions from '../posts/store/posts.actions';
+import * as TasksActions from '../tasks/store/tasks.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +21,8 @@ export class UsersResolver implements Resolve<Observable<IUser[]>> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<IUser[]> {
         this.store.dispatch(new UserActions.FetchUsers());
+        this.store.dispatch(new PostsActions.FetchPosts());
+        this.store.dispatch(new TasksActions.FetchTasks());
 
         // return this.store.select(fromApp.getUsersState)
         //     .pipe(debounceTime(1500)

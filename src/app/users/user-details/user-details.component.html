@@ -90,20 +90,80 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label>Posts</label>
-            <div class="list-group">
-              <a *ngFor="let post of posts"
-                class="list-group-item"
-                [@list]>
-                <span class=""> {{ post.title }} <button type="button"
-                    class="close">
-                    <span style="cursor: pointer">&times;</span>
-                  </button></span>
-              </a>
+            <button type="button"
+              class="btn btn-default pull-right"
+              (click)="onNewPost()">
+              Add
+            </button>
+          </div>
+          <ng-template [ngIf]="isAddPost">
+            <div class="row"
+              ngModelGroup="postData"
+              #postData="ngModelGroup">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="title">title</label>
+                  <input type="text"
+                    id="title"
+                    name="title"
+                    ngModel
+                    #title="ngModel"
+                    required
+                    class="form-control">
+                  <!-- <span class="help-block"
+                    *ngIf="title.invalid && title.touched">
+                    Title is required
+                  </span> -->
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="body">body</label>
+                  <div class="input-group">
+                    <input type="text"
+                      id="body"
+                      name="body"
+                      required
+                      ngModel
+                      #body="ngModel"
+                      class="form-control">
+                    <!-- <span class="help-block"
+                      *ngIf="body.invalid && body.touched">
+                      Body is required
+                    </span> -->
+                    <span class="input-group-btn">
+                      <button type="button"
+                        class="btn btn-default pull-right"
+                        (click)="onRemovePost()">
+                        <span class="glyphicon glyphicon-minus-sign"></span>
+                      </button>
+                    </span>
+                    <span class="input-group-btn">
+                      <button type="button"
+                        class="btn btn-default pull-right"
+                        (click)="onAddPost(postData.value.title, postData.value.body)"
+                        [disabled]="postData.invalid">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <!-- <ul class="list-group">
-              <li *ngFor="let post of posts"
-                class="list-group-item" [@list]>{{ post.title }}</li>
-            </ul> -->
+          </ng-template>
+          <div class="list-group">
+            <a *ngFor="let post of posts; let i = index"
+              class="list-group-item"
+              [ngClass]="{'active': selectedPostIndex === i}"
+              style="cursor: pointer"
+              (click)="selectPost(i)"
+              [@list]>
+              <span> {{ post.title }} <button type="button"
+                  class="close"
+                  (click)="onDeletePost(post.id)">
+                  <span style="color: red;">&times;</span>
+                </button></span>
+            </a>
           </div>
         </div>
       </div>
@@ -111,11 +171,18 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label>Tasks</label>
-            <ul class="list-group">
-              <li *ngFor="let task of tasks"
-                class="list-group-item"
-                [@list]>{{ task.title }}</li>
-            </ul>
+            <a *ngFor="let task of tasks; let i = index"
+              class="list-group-item"
+              [ngClass]="{'active': selectedTaskIndex === i}"
+              style="cursor: pointer"
+              (click)="selectTask(i)"
+              [@list]>
+              <span> {{ task.title }} <button type="button"
+                  class="close"
+                  (click)="onDeleteTask(task.id)">
+                  <span style="color: red;">&times;</span>
+                </button></span>
+            </a>
           </div>
         </div>
       </div>

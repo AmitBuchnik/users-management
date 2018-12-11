@@ -20,6 +20,21 @@ export function tasksReducer(state = intialState, action: TasksActions.TasksActi
                 loaded: true
             };
 
+        case TasksActions.ADD_TASK:
+            return {
+                ...state,
+                tasks: [...state.tasks, action.payload]
+            };
+
+        case TasksActions.DELETE_TASK:
+            let tasksCopy = [...state.tasks];
+            tasksCopy = tasksCopy.filter(t => t.id !== action.payload);
+
+            return {
+                ...state,
+                tasks: tasksCopy
+            };
+
         default:
             return state;
     }

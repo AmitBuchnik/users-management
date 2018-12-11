@@ -20,6 +20,21 @@ export function postsReducer(state = intialState, action: PostsActions.PostsActi
                 loaded: true
             };
 
+        case PostsActions.ADD_POST:
+            return {
+                ...state,
+                posts: [...state.posts, action.payload]
+            };
+
+        case PostsActions.DELETE_POST:
+            let postsCopy = [...state.posts];
+            postsCopy = postsCopy.filter(p => p.id !== action.payload);
+
+            return {
+                ...state,
+                posts: postsCopy
+            };
+
         default:
             return state;
     }
