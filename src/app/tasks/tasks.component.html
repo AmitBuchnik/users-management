@@ -1,3 +1,45 @@
-<p>
-  tasks works!
-</p>
+<div class="form-group">
+  <div class="btn-group">
+    <label class="btn btn-primary"
+      for="all">
+      <input type="radio"
+        name="options"
+        id="all"
+        value="all"
+        [(ngModel)]="filterText"
+      (change)="filterTable()">All</label>
+    <label class="btn btn-success"
+      for="completed">
+      <input type="radio"
+        name="options"
+        id="completed"
+        value="completed"
+        [(ngModel)]="filterText"
+        (change)="filterTable()">Completed</label>
+    <label class="btn btn-warning"
+      for="uncompleted">
+      <input type="radio"
+        name="options"
+        id="uncompleted"
+        value="uncompleted"
+        [(ngModel)]="filterText"
+        (change)="filterTable()">Uncompleted</label>
+  </div>
+</div>
+<table class="table"
+  [@table]>
+  <thead>
+    <tr>
+      <th class="col-md-4">Task Id</th>
+      <th class="col-md-4">User Id</th>
+      <th class="col-md-4">Completed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of filteredTasks">
+      <td>{{ task.id }}</td>
+      <td>{{ task.userId }}</td>
+      <td [class.completed]="task.completed">{{ task.completed | yesNo }}</td>
+    </tr>
+  </tbody>
+</table>

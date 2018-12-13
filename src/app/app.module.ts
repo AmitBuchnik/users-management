@@ -21,6 +21,7 @@ import { PostsComponent } from './posts/posts.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ApplicationService } from './services/application.service';
 import { JQUERY_TOKEN } from './services/jQuery.service';
+import { SharedModule } from './shared/shared.module';
 
 // import * as $ from 'bootstrap';
 
@@ -47,6 +48,7 @@ export function app_init(appService: ApplicationService) {
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule,
     AuthModule,
+    SharedModule
   ],
   providers: [
     // {
