@@ -87,12 +87,14 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   tasks$: Observable<ITask[]>;
   posts: IPost[];
   tasks: ITask[];
+  newPosts: IPost[] = [];
+  newTasks: ITask[] = [];
   postsSubscription: Subscription;
   tasksSubscription: Subscription;
   selectedPostIndex: number;
   selectedTaskIndex: number;
-  isAddPost = false;
-  isAddTask = false;
+  lastPostsId: number;
+  lastTasksId: number;
 
   @ViewChild('form') userForm: NgForm;
 
@@ -119,11 +121,17 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
         this.postsSubscription = this.store.select('posts')
           .pipe(filter((postsState: fromPosts.IState) => postsState && postsState.loaded)
             , map((postsState: fromPosts.IState) => postsState.posts.filter(p => p.userId === userId)))
-          .subscribe(p => this.posts = p);
+          .subscribe(p => {
+            this.posts = p;
+            this.lastPostsId = this.getLastId(this.posts);
+          });
         this.tasksSubscription = this.store.select('tasks')
           .pipe(filter((tasksState: fromTasks.IState) => tasksState && tasksState.loaded)
-            , map((tasksState: fromTasks.IState) => tasksState.tasks.filter(t => t => t.userId === userId && !t.completed)))
-          .subscribe(t => this.tasks = t);
+            , map((tasksState: fromTasks.IState) => tasksState.tasks.filter(t => t.userId === userId && t.completed === false)))
+          .subscribe(t => {
+            this.tasks = t;
+            this.lastTasksId = this.getLastId(this.tasks);
+          });
       });
   }
 
@@ -156,31 +164,24 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   }
 
   onNewPost() {
-    this.isAddPost = true;
-  }
-
-  onAddPost(title: string, body: string) {
-    this.isAddPost = false;
-
-    const post: IPost = {
-      id: this.getLastPostId(),
+    this.newPosts.push({
+      id: this.lastPostsId++,
       userId: this.user.id,
       UserName: this.user.name,
-      title: title,
-      body: body
-    };
-    this.store.dispatch(new PostsActions.AddPost(post));
+      title: '',
+      body: ''
+    });
   }
 
-  getLastPostId(): number {
-    //this.posts$.pipe(map((posts) => Math.max(...posts.map(p => p.id), 0));
-    return Math.max(...this.posts.map(p => p.id), 0);
+  onAddPost(title: string, body: string, index: number) {
+    this.newPosts[index].title = title;
+    this.newPosts[index].body = body;
+    this.store.dispatch(new PostsActions.AddPost(this.newPosts[index]));
+    this.newPosts = <IPost[]> this.removeById(this.newPosts, this.newPosts[index].id);
   }
 
-  onRemovePost() {
-    this.isAddPost = false;
-
-    this.userForm.controls['postData'].reset();
+  onRemovePost(id: number, controlIndex: number) {
+    this.newPosts = <IPost[]> this.removeById(this.newPosts, id);
 
     // for (let name in this.userForm.controls['postData']) {
     //       this.userForm.controls[name].setErrors(null);
@@ -192,22 +193,34 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   }
 
   onNewTask() {
-    this.isAddTask = true;
+    this.newTasks.push({
+      id: this.lastTasksId++,
+      userId: this.user.id,
+      title: '',
+      completed: false
+    });
   }
 
-  onAddTask() {
-    this.isAddTask = false;
+  onAddTask(title: string, completed: boolean, index: number) {
+    this.newTasks[index].title = title;
+    this.newTasks[index].completed = completed;
+    this.store.dispatch(new TasksActions.AddTask(this.newTasks[index]));
+    this.newTasks = <ITask[]> this.removeById(this.newTasks, this.newTasks[index].id);
   }
 
-  getLastTaskId(): number {
-    return Math.max(...this.tasks.map(p => p.id), 0);
-  }
-
-  onRemoveTask() {
-    this.isAddTask = false;
+  onRemoveTask(id: number, controlIndex: number) {
+    this.newTasks = <ITask[]> this.removeById(this.newTasks, id);
   }
 
   onDeleteTask(taskId: number) {
     this.store.dispatch(new TasksActions.DeleteTask(taskId));
+  }
+
+  getLastId(items: Array<IPost | ITask>): number {
+    return Math.max(...items.map(p => p.id), 0) + 1;
+  }
+
+  removeById(items: Array<IPost | ITask>, id: number): Array<IPost | ITask> {
+    return items.filter(item => item.id !== id);
   }
 }

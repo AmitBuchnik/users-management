@@ -96,57 +96,48 @@
               Add
             </button>
           </div>
-          <ng-template [ngIf]="isAddPost">
+          <ng-template ngFor
+            let-post
+            let-i="index"
+            let-c="count"
+            [ngForOf]="newPosts">
             <div class="row"
-              ngModelGroup="postData"
+              [ngModelGroup]="post.id"
               #postData="ngModelGroup">
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <div class="form-group">
-                  <label for="title">title</label>
                   <input type="text"
-                    id="title"
                     name="title"
-                    ngModel
-                    #title="ngModel"
+                    [(ngModel)]="post.title"
                     required
+                    placeholder="title"
                     class="form-control">
-                  <!-- <span class="help-block"
-                    *ngIf="title.invalid && title.touched">
-                    Title is required
-                  </span> -->
                 </div>
               </div>
-              <div class="col-md-8">
-                <div class="form-group">
-                  <label for="body">body</label>
-                  <div class="input-group">
-                    <input type="text"
-                      id="body"
-                      name="body"
-                      required
-                      ngModel
-                      #body="ngModel"
-                      class="form-control">
-                    <!-- <span class="help-block"
-                      *ngIf="body.invalid && body.touched">
-                      Body is required
-                    </span> -->
-                    <span class="input-group-btn">
-                      <button type="button"
-                        class="btn btn-default pull-right"
-                        (click)="onRemovePost()">
-                        <span class="glyphicon glyphicon-minus-sign"></span>
-                      </button>
-                    </span>
-                    <span class="input-group-btn">
-                      <button type="button"
-                        class="btn btn-default pull-right"
-                        (click)="onAddPost(postData.value.title, postData.value.body)"
-                        [disabled]="postData.invalid">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                      </button>
-                    </span>
-                  </div>
+              <div class="col-md-7">
+                <div class="input-group">
+                  <input type="text"
+                    name="body"
+                    [(ngModel)]="post.body"
+                    required
+                    placeholder="body"
+                    class="form-control input-group-text">
+                  <span class="input-group-btn"
+                    style="padding-left: 15px;">
+                    <button type="button"
+                      class="btn btn-default"
+                      (click)="onRemovePost(post.id, i)">
+                      <span class="glyphicon glyphicon-minus-sign"></span>
+                    </button>
+                  </span>
+                  <span class="input-group-btn">
+                    <button type="button"
+                      class="btn btn-default"
+                      (click)="onAddPost(post.title, post.body, i)"
+                      [disabled]="postData.invalid">
+                      <span class="glyphicon glyphicon-plus-sign"></span>
+                    </button>
+                  </span>
                 </div>
               </div>
             </div>
@@ -171,19 +162,87 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label>Tasks</label>
-            <a *ngFor="let task of tasks; let i = index"
-              class="list-group-item"
-              [ngClass]="{'active': selectedTaskIndex === i}"
-              style="cursor: pointer"
-              (click)="selectTask(i)"
-              [@list]>
-              <span> {{ task.title }} <button type="button"
-                  class="close"
-                  (click)="onDeleteTask(task.id)">
-                  <span style="color: red;">&times;</span>
-                </button></span>
-            </a>
+            <button type="button"
+              class="btn btn-default pull-right"
+              (click)="onNewTask()">
+              Add
+            </button>
           </div>
+          <ng-template ngFor
+            let-task
+            let-i="index"
+            let-c="count"
+            [ngForOf]="newTasks">
+            <div class="row"
+              [ngModelGroup]="task.id"
+              #taskData="ngModelGroup">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="input-group">
+                    <!-- <input type="text"
+                      name="title"
+                      [(ngModel)]="task.title"
+                      required
+                      placeholder="title"
+                      class="form-control"> -->
+                    <!-- <span class="input-group-addon">
+                      <input type="checkbox"
+                        name="completed"
+                        [(ngModel)]="task.completed"
+                        class="">
+                    </span> -->
+                    <input type="text"
+                      name="title"
+                      [(ngModel)]="task.title"
+                      required
+                      placeholder="title"
+                      class="form-control">
+                    <input type="checkbox"
+                      id="{{ task.id }}"
+                      name="completed"
+                      [(ngModel)]="task.completed">
+                    <div class="input-group-btn">
+                      <label for="{{ task.id }}"
+                        class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"
+                          [ngStyle]="{'display': task.completed ? 'inline-block' : 'none'}"></span>
+                        <span [ngStyle]="{'display': !task.completed ? 'inline-block' : 'none'}">&nbsp;</span>
+                      </label>
+                    </div>
+                    <span class="input-group-btn"
+                      style="padding-left: 15px;">
+                      <button type="button"
+                        class="btn btn-default"
+                        (click)="onRemoveTask(task.id, i)">
+                        <span class="glyphicon glyphicon-minus-sign"></span>
+                      </button>
+                    </span>
+                    <span class="input-group-btn">
+                      <button type="button"
+                        class="btn btn-default"
+                        (click)="onAddTask(task.title, task.completed, i)"
+                        [disabled]="taskData.invalid">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <div class="list-group"></div>
+          <a *ngFor="let task of tasks; let i = index"
+            class="list-group-item"
+            [ngClass]="{'active': selectedTaskIndex === i}"
+            style="cursor: pointer"
+            (click)="selectTask(i)"
+            [@list]>
+            <span> {{ task.title }} <button type="button"
+                class="close"
+                (click)="onDeleteTask(task.id)">
+                <span style="color: red;">&times;</span>
+              </button></span>
+          </a>
         </div>
       </div>
     </form>
