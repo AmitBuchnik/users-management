@@ -59,7 +59,6 @@ import * as UserActions from '../users/store/user.actions';
 export class TasksComponent implements OnInit {
   tasks: ITask[];
   filteredTasks: ITask[];
-  filterText = 'all';
   posts$: Observable<fromTasks.IState>;
 
   constructor(private route: ActivatedRoute,
@@ -73,8 +72,8 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  filterTable() {
-    switch (this.filterText) {
+  filterTable(filterText) {
+    switch (filterText) {
       case 'all':
         this.filteredTasks = this.tasks.slice();
         break;
@@ -82,7 +81,7 @@ export class TasksComponent implements OnInit {
       case 'completed':
         this.filteredTasks = this.tasks.filter(t => t.completed);
         break;
-
+        
       case 'uncompleted':
         this.filteredTasks = this.tasks.filter(t => !t.completed);
         break;

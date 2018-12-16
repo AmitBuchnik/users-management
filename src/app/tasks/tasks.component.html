@@ -6,24 +6,21 @@
         name="options"
         id="all"
         value="all"
-        [(ngModel)]="filterText"
-      (change)="filterTable()">All</label>
+        (change)="filterTable('all')">All</label>
     <label class="btn btn-success"
       for="completed">
       <input type="radio"
         name="options"
         id="completed"
         value="completed"
-        [(ngModel)]="filterText"
-        (change)="filterTable()">Completed</label>
+        (change)="filterTable('completed')">Completed</label>
     <label class="btn btn-warning"
       for="uncompleted">
       <input type="radio"
         name="options"
         id="uncompleted"
         value="uncompleted"
-        [(ngModel)]="filterText"
-        (change)="filterTable()">Uncompleted</label>
+        (change)="filterTable('uncompleted')">Uncompleted</label>
   </div>
 </div>
 <table class="table"
