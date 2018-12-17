@@ -8,7 +8,9 @@ import {
   transition,
   animate,
   keyframes,
-  style
+  style,
+  query,
+  group
 } from '@angular/animations';
 
 import { ITask } from './task.model';
@@ -25,33 +27,16 @@ import * as UserActions from '../users/store/user.actions';
   styleUrls: ['./tasks.component.css'],
   animations: [
     trigger('table', [
-      state('inDom', style({
-        opacity: 1,
-        transform: 'translateX(0)'
+      // the "in" style determines the "resting" state of the element when it is visible.
+      state('in', style({
       })),
-      transition('void => *', [
-        animate(1000, keyframes([
-          style({
-            transform: 'translateX(-100px)',
-            opacity: 0,
-            offset: 0
-          }),
-          style({
-            transform: 'translateX(-50px)',
-            opacity: 0.5,
-            offset: 0.3
-          }),
-          style({
-            transform: 'translateX(-20px)',
-            opacity: 1,
-            offset: 0.8
-          }),
-          style({
-            transform: 'translateX(0)',
-            opacity: 1,
-            offset: 1
-          })
-        ]))
+
+      // fade in when created. this could also be written as transition('void => *')
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate('1500ms ease-in-out')
       ])
     ])
   ]
@@ -81,7 +66,7 @@ export class TasksComponent implements OnInit {
       case 'completed':
         this.filteredTasks = this.tasks.filter(t => t.completed);
         break;
-        
+
       case 'uncompleted':
         this.filteredTasks = this.tasks.filter(t => !t.completed);
         break;
