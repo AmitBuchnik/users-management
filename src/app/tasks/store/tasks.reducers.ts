@@ -35,6 +35,15 @@ export function tasksReducer(state = intialState, action: TasksActions.TasksActi
                 tasks: tasksCopy
             };
 
+        case TasksActions.DELETE_TASKS:
+            let tasks = [...state.tasks];
+            tasks = tasks.filter(t => t.userId !== action.payload);
+
+            return {
+                ...state,
+                posts: tasks
+            };
+
         default:
             return state;
     }

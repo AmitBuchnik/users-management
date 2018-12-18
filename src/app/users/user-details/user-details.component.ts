@@ -142,13 +142,22 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.store.dispatch(new UserActions.UpdateUser({ index: this.user.id, user: this.user }));
-    // this.store.dispatch(new UserActions.StoreUsers());
+    this.saveToDB();
     this.router.navigate(['/users']);
   }
 
   onDelete() {
+    this.store.dispatch(new PostsActions.DeletePosts(this.user.id));
+    this.store.dispatch(new TasksActions.DeleteTasks(this.user.id));
     this.store.dispatch(new UserActions.DeleteUser(this.user.id));
+    this.saveToDB();
     this.router.navigate(['/users']);
+  }
+
+  saveToDB() {
+    this.store.dispatch(new UserActions.StoreUsers());
+    this.store.dispatch(new PostsActions.StorePosts());
+    this.store.dispatch(new TasksActions.StoreTasks());
   }
 
   onCancel() {
@@ -180,7 +189,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.newPosts = <IPost[]> this.removeById(this.newPosts, this.newPosts[index].id);
   }
 
-  onRemovePost(id: number, controlIndex: number) {
+  onRemovePost(id: number) {
     this.newPosts = <IPost[]> this.removeById(this.newPosts, id);
 
     // for (let name in this.userForm.controls['postData']) {
@@ -208,7 +217,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.newTasks = <ITask[]> this.removeById(this.newTasks, this.newTasks[index].id);
   }
 
-  onRemoveTask(id: number, controlIndex: number) {
+  onRemoveTask(id: number) {
     this.newTasks = <ITask[]> this.removeById(this.newTasks, id);
   }
 

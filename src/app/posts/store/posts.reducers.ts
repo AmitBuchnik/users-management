@@ -35,6 +35,15 @@ export function postsReducer(state = intialState, action: PostsActions.PostsActi
                 posts: postsCopy
             };
 
+        case PostsActions.DELETE_POSTS:
+            let posts = [...state.posts];
+            posts = posts.filter(p => p.userId !== action.payload);
+
+            return {
+                ...state,
+                posts: posts
+            };
+
         default:
             return state;
     }

@@ -48,7 +48,7 @@ export class AddUserComponent implements OnInit {
         }
 
         this.store.dispatch(new UserActions.AddUser(user));
-        // this.store.dispatch(new UserActions.StoreUsers());
+        this.store.dispatch(new UserActions.StoreUsers());
         this.router.navigate(['../'], { relativeTo: this.route });
       });
   }
