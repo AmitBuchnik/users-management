@@ -41,7 +41,7 @@ export function tasksReducer(state = intialState, action: TasksActions.TasksActi
 
             return {
                 ...state,
-                posts: tasks
+                tasks: tasks
             };
 
         default:
