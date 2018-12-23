@@ -1,11 +1,14 @@
 <form id="searchForm"
   (ngSubmit)="searchUsers()">
   <div class="input-group">
-    <input type="text"
-      [(ngModel)]="searchTerm"
-      name="searchTerm"
-      class="form-control"
-      placeholder="Search User">
+    <div class="has-feedback">
+      <input type="text"
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+        class="form-control"
+        placeholder="Search User">
+      <i class="glyphicon glyphicon-user form-control-feedback"></i>
+    </div>
     <span class="input-group-btn">
       <button class="btn btn-info"
         modal-trigger="searchResults">

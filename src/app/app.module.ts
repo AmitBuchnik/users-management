@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { reducers } from './store/app.reducers';
@@ -21,7 +22,6 @@ import { PostsComponent } from './posts/posts.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ApplicationService } from './services/application.service';
 import { JQUERY_TOKEN } from './services/jQuery.service';
-import { SharedModule } from './shared/shared.module';
 
 // import * as $ from 'bootstrap';
 

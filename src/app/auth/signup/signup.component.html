@@ -38,12 +38,17 @@
       <ng-template [ngIf]="!(authState | async).authenticated && (authState | async).error != null">
         <span class="help-block">{{ (authState | async).error }}</span>
       </ng-template>
-      <button class="btn btn-primary"
+      <button mat-raised-button
+        type="submit"
+        color="primary"
+        (keyup.enter)="onSignup(form)"
+        [disabled]="form.invalid">Sign Up</button>
+      <!-- <button class="btn btn-primary"
         type="submit"
         (keyup.enter)="onSignup(form)"
         [disabled]="form.invalid">
         Sign Up
-      </button>
+      </button> -->
     </form>
   </div>
 </div>

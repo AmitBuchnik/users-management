@@ -18,8 +18,8 @@ export interface IAddress {
 }
 
 export interface IGeo {
-    lat: number;
-    lng: number;
+    lat: string;
+    lng: string;
 }
 
 export interface ICompany {
